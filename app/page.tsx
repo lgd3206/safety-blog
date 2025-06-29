@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { getArticlesByCategory } from '../lib/articles'
 
 export default function Home() {
   const categories = [
@@ -83,5 +82,3 @@ export default function Home() {
     </div>
   )
 }
-
-// ================================

@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react';
 import './globals.css'
 
 export const metadata = {
@@ -6,7 +5,7 @@ export const metadata = {
   description: '聚合权威资讯·实用工具·最新资讯·一站式服务',
 }
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }) {
   return (
     <html lang="zh-CN">
       <body className="bg-gray-50 min-h-screen">
@@ -26,5 +25,3 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     </html>
   )
 }
-
-// ================================

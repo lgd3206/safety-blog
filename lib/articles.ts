@@ -4,19 +4,28 @@ import matter from 'gray-matter'
 
 const articlesDirectory = path.join(process.cwd(), 'content')
 
-export function getAllArticles() {
+interface Article {
+  slug: string
+  category: string
+  title: string
+  date: string
+  content: string
+  [key: string]: any
+}
+
+export function getAllArticles(): Article[] {
   const categories = ['policy', 'training', 'tools', 'cases', 'community']
-  let allArticles = []
+  let allArticles: Article[] = []
 
   categories.forEach(category => {
     const articles = getArticlesByCategory(category)
     allArticles = [...allArticles, ...articles]
   })
 
-  return allArticles.sort((a, b) => new Date(b.date) - new Date(a.date))
+  return allArticles.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 }
 
-export function getArticlesByCategory(category) {
+export function getArticlesByCategory(category: string): Article[] {
   const categoryPath = path.join(articlesDirectory, category)
   
   if (!fs.existsSync(categoryPath)) {
@@ -27,7 +36,7 @@ export function getArticlesByCategory(category) {
   
   const articles = filenames
     .filter(filename => filename.endsWith('.md'))
-    .map((filename) => {
+    .map((filename): Article => {
       const filePath = path.join(categoryPath, filename)
       const fileContents = fs.readFileSync(filePath, 'utf8')
       const { data, content } = matter(fileContents)
@@ -37,13 +46,13 @@ export function getArticlesByCategory(category) {
         category,
         ...data,
         content
-      }
+      } as Article
     })
   
-  return articles.sort((a, b) => new Date(b.date) - new Date(a.date))
+  return articles.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 }
 
-export function getArticleBySlug(category, slug) {
+export function getArticleBySlug(category: string, slug: string): Article | null {
   const filePath = path.join(articlesDirectory, category, `${slug}.md`)
   
   if (!fs.existsSync(filePath)) {
@@ -58,7 +67,5 @@ export function getArticleBySlug(category, slug) {
     category,
     ...data,
     content
-  }
+  } as Article
 }
-
-// ================================
